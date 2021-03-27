@@ -1,0 +1,62 @@
+{
+  "name": "custom-property-extract",
+  "version": "1.0.0",
+  "description": "Extract CSS custom properties (a.k.a CSS variables) and their values from stylesheets.",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "scripts": {
+    "build": "tsc",
+    "build:watch": "tsc --watch",
+    "test": "jest --coverage",
+    "test:watch": "npm run test -- --watch",
+    "lint": "eslint ./src --ext .js,.ts",
+    "format": "prettier --write \"src/**/*.ts\"",
+    "prepare": "npm run build",
+    "prepublishOnly": "npm test && npm run lint",
+    "preversion": "npm test && npm run lint",
+    "version": "git add *",
+    "postversion": "git push && git push --tags"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Dschungelabenteuer/custom-property-extract.git"
+  },
+  "files": [
+    "dist/**/*"
+  ],
+  "keywords": [
+    "scss",
+    "css",
+    "variables",
+    "stylesheets",
+    "custom properties",
+    "sass"
+  ],
+  "publishConfig": {
+    "registry": "https://registry.npmjs.org"
+  },
+  "author": "Charles Gruenais <charles.gruenais@gmail.com>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/Dschungelabenteuer/custom-property-extract/issues"
+  },
+  "homepage": "https://github.com/Dschungelabenteuer/custom-property-extract#readme",
+  "devDependencies": {
+    "@typescript-eslint/eslint-plugin": "^4.18.0",
+    "@typescript-eslint/parser": "^4.18.0",
+    "eslint": "^7.22.0",
+    "eslint-config-prettier": "^8.1.0",
+    "eslint-plugin-prettier": "^3.3.1",
+    "jest": "^26.6.3",
+    "ts-jest": "^26.5.4",
+    "typescript": "^4.2.3"
+  },
+  "dependencies": {
+    "@types/jest": "^26.0.21",
+    "gonzales-pe": "^4.3.0",
+    "schema-utils": "^3.0.0"
+  },
+  "directories": {
+    "test": "tests"
+  }
+}

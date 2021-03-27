@@ -1,0 +1,20 @@
+{
+  "type": "object",
+  "properties": {
+    "syntax": {
+      "description": "Syntax of the stylesheet",
+      "type": "string",
+      "enum": ["css", "scss", "sass"]
+    },
+    "source": {
+      "description": "Type of the source",
+      "type": "string",
+      "enum": ["file", "content"]
+    },
+    "prefix": {
+      "description": "Should the custom properties names be prefixed with a double hyphen",
+      "type": "boolean"
+    }
+  },
+  "additionalProperties": false
+}

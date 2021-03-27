@@ -1,0 +1,39 @@
+:root {
+  --color-primary: #ff017d;
+  --color-secondary: #000;
+  --color-background: white;
+  --color-foreground: var(--color-secondary);
+
+  --radius-round: 50% 50%;
+  --spacing-s: 5rem;
+
+  --shadow-xs: 1px 2px 3px 4px rgba(0,0,0,0.25),
+    inset 4px 3px 2px 1px #fff;
+
+  --border-light: 1px solid rgba(0,0,0,0.15);
+  --amount-suffix-content: '€';
+  --margin-default: 0.5rem !important;
+}
+
+[data-theme="dark"] {
+  $color-secondary: blue;
+
+  --color-primary: #cf689a;
+  --color-secondary: $color-secondary;
+  --color-background: var(--color-background);
+
+  &.nested {
+    --color-primary: $color-secondary;
+    --width-header: calc(100vh - (3rem / 2));
+  }
+}
+
+[data-lang="us"] {
+  --amount-suffix-content: '$';
+}
+
+@media screen and (min-width: 960px) {
+  :root {
+    --color-primary: blue;
+  }
+}
