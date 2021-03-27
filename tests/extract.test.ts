@@ -1,7 +1,8 @@
 /* eslint-disable quotes */
 import fs from 'fs';
 import path from 'path';
-import { FileSyntax } from '../src/types';
+import options from '../src/options.json';
+import { FileSyntax, SourceType } from '../src/types';
 import { extract } from '../src';
 
 const resultTemplate = {
@@ -33,64 +34,36 @@ const getExpectedOutput = (syntax: FileSyntax, prefix = true) => {
   }
 };
 
-describe('Custom Property Extract - extract from file', () => {
+const getContent = (syntax: FileSyntax, source: SourceType) => {
+  switch (source) {
+    case 'content':
+      return fs.readFileSync(require.resolve(`./example.${syntax}`), 'utf8');
+    default:
+      return path.resolve(`./tests/example.${syntax}`);
+  }
+}
 
-  it('should correcty extract custom properties from CSS files', () => {
-    const syntax = 'css';
-    const result = extract(path.resolve(`./tests/example.${syntax}`), { syntax });
-    expect(result).toEqual(getExpectedOutput(syntax));
+const availableSourceTypes: SourceType[] = options.properties.source.enum as SourceType[];
+const availableFileSyntaxes: FileSyntax[] =  options.properties.syntax.enum as FileSyntax[];
+
+availableSourceTypes.forEach((source) => {
+  describe(`Custom Property Extract - extract from ${source}`, () => {
+
+    availableFileSyntaxes.forEach((syntax) => {
+
+      it(`should correcty extract custom properties from ${syntax.toUpperCase()} ${source}`, () => {
+        const content = getContent(syntax, source);
+        const result = extract(content, { syntax, source });
+        expect(result).toEqual(getExpectedOutput(syntax));
+      });
+
+      it(`should correcty extract unprefixed custom properties from ${syntax.toUpperCase()} ${source}`, () => {
+        const prefix = false;
+        const content = getContent(syntax, source);
+        const result = extract(content, { syntax, source, prefix });
+        expect(result).toEqual(getExpectedOutput(syntax, prefix));
+      });
+
+    });
   });
-
-  it('should correcty extract custom properties from SASS files', () => {
-    const syntax = 'sass';
-    const result = extract(path.resolve(`./tests/example.${syntax}`), { syntax });
-    expect(result).toEqual(getExpectedOutput(syntax));
-  });
-
-  it('should correcty extract custom properties from SCSS files', () => {
-    const syntax = 'scss';
-    const result = extract(path.resolve(`./tests/example.${syntax}`), { syntax });
-    expect(result).toEqual(getExpectedOutput(syntax));
-  });
-
-  it('should correcty remove custom properties prefix when prefix is set to false', () => {
-    const syntax = 'scss';
-    const result = extract(path.resolve(`./tests/example.${syntax}`), { syntax, prefix: false });
-    expect(result).toEqual(getExpectedOutput(syntax, false));
-  });
-
 });
-
-
-describe('Custom Property Extract - extract from content', () => {
-
-  it('should correcty extract custom properties from CSS files', () => {
-    const syntax = 'css';
-    const content = fs.readFileSync(require.resolve(`./example.${syntax}`), 'utf8')
-    const result = extract(content, { syntax, source: 'content' });
-    expect(result).toEqual(getExpectedOutput(syntax));
-  });
-
-  it('should correcty extract custom properties from SASS files', () => {
-    const syntax = 'sass';
-    const content = fs.readFileSync(require.resolve(`./example.${syntax}`), 'utf8')
-    const result = extract(content, { syntax, source: 'content' });
-    expect(result).toEqual(getExpectedOutput(syntax));
-  });
-
-  it('should correcty extract custom properties from SCSS files', () => {
-    const syntax = 'scss';
-    const content = fs.readFileSync(require.resolve(`./example.${syntax}`), 'utf8')
-    const result = extract(content, { syntax, source: 'content' });
-    expect(result).toEqual(getExpectedOutput(syntax));
-  });
-
-  it('should correcty remove custom properties prefix when prefix is set to false', () => {
-    const syntax = 'scss';
-    const content = fs.readFileSync(require.resolve(`./example.${syntax}`), 'utf8')
-    const result = extract(content, { syntax, source: 'content', prefix: false });
-    expect(result).toEqual(getExpectedOutput(syntax, false));
-  });
-
-});
-
