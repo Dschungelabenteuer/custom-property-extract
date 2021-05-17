@@ -1,9 +1,51 @@
 import { FileSyntax, StyleNode } from './types';
 
-const formatValue = (
+export const formatScope = (
+  scope: string[],
+  nodes: StyleNode[]
+): string[] => {
+  const output: string[] = [];
+  const proceedableTypes = ['selector', 'space', 'delimiter'];
+  const proceedableNodes = nodes.filter(({ type }) => proceedableTypes.includes(type));
+  const childSelectors: string[] = [];
+  let currentIndex = 0;
+
+  proceedableNodes.forEach(({ type, content }) => {
+    switch (type) {
+      case 'selector':
+        childSelectors[currentIndex] = formatSelector(content as StyleNode[]);
+        return;
+      case 'delimiter':
+        childSelectors[currentIndex] = childSelectors[currentIndex] + ' ';
+        currentIndex++;
+        return;
+      default:
+        childSelectors[currentIndex] = childSelectors[currentIndex] + ' ';
+        break;
+    }
+  });
+
+  if (!scope.length) {
+    return childSelectors;
+  }
+
+  scope.forEach((selector) => {
+    childSelectors.forEach((childSelector) => {
+      output.push(
+        `${selector}${childSelector}`
+          .replace(' &', '')
+          .replace(' :', ':')
+      );
+    });
+  });
+
+  return output;
+}
+
+export const formatValue = (
   syntax: FileSyntax,
   nodes: StyleNode[],
-  parentType?: string
+  parentType?: string,
 ): string => {
   const output: string[] = [];
   const nodeLength = nodes.length;
@@ -64,20 +106,33 @@ const formatColor = (value: string): string => {
   return `#${value}`;
 }
 
-const formatParentheses = (
+const formatWrappedContent = (
   value: string,
   index: number,
-  length: number
+  length: number,
+  chars: [string, string],
 ): string => {
+  const [open, close] = chars;
+
+  if (index === 0 && length === 1) {
+    return `${open}${value}${close}`;
+  }
+
   switch (index) {
     case 0:
-      return `(${value}`;
+      return `${open}${value}`;
     case length - 1:
-      return `${value})`;
+      return `${value}${close}`;
     default:
       return value;
   }
 }
+
+const formatParentheses = (
+  value: string,
+  index: number,
+  length: number
+): string => formatWrappedContent(value, index, length, ['(', ')'])
 
 const formatFunctionContent = (
   value: string,
@@ -94,6 +149,12 @@ const formatFunctionContent = (
   }
 }
 
+const formatAttributeContent = (
+  value: string,
+  index: number,
+  length: number
+): string => formatWrappedContent(value, index, length, ['[', ']'])
+
 const formatIdentifier = (
   syntax: FileSyntax,
   value: string,
@@ -109,4 +170,44 @@ const formatIdentifier = (
   }
 }
 
-export default formatValue;
+export const formatSelector = (
+  nodes: StyleNode[],
+  parentType?: string,
+): string => {
+  const output: string[] = [];
+  const nodeLength = nodes.length;
+
+  nodes.forEach(({ content, type }, index) => {
+    let value: string = '';
+
+    if (Array.isArray(content)) {
+      value = formatSelector(content, type);
+    } else {
+      value = formatStringValue(content as string, type, parentType)
+    }
+
+    if (type === 'class') {
+      value = `.${value}`;
+    }
+
+    if (type === 'pseudoElement') {
+      value = `::${value}`;
+    }
+
+    if (type === 'pseudoClass') {
+      value = `:${value}`;
+    }
+
+    if (parentType === 'arguments') {
+      value = `${formatParentheses(value, index, nodeLength)}`;
+    }
+
+    if (parentType === 'attributeSelector') {
+      value = `${formatAttributeContent(value, index, nodeLength)}`;
+    }
+
+    output.push(`${value}`);
+  });
+
+  return output.join('');
+}

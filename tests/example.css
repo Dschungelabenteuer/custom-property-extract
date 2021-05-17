@@ -1,5 +1,6 @@
 @charset "UTF-8";
 :root {
+  /** @case Main color. */
   --color-primary: #ff017d;
   --color-secondary: #000;
   --color-background: white;
@@ -13,6 +14,7 @@
 }
 
 [data-theme="dark"] {
+  /** @case Main color but for dark mode. */
   --color-primary: #cf689a;
   --color-secondary: blue;
   --color-background: var(--color-background);
@@ -31,4 +33,44 @@
   :root {
     --color-primary: blue;
   }
+}
+
+.firstSelector .firstChildSelector, .firstSelector .secondChildSelector, .secondSelector .firstChildSelector, .secondSelector .secondChildSelector {
+  --test-variable: red;
+}
+.firstSelector.firstModifierSelector, .firstSelector.secondModifierSelector, .secondSelector.firstModifierSelector, .secondSelector.secondModifierSelector {
+  --test-variable: blue;
+}
+.firstSelector > div, .secondSelector > div {
+  --test-variable: yellow;
+}
+.firstSelector > span, .secondSelector > span {
+  --test-variable: green;
+}
+.firstSelector:hover, .secondSelector:hover {
+  --test-variable: green;
+}
+.firstSelector::before, .secondSelector::before {
+  --test-variable: green;
+}
+.firstSelector:nth-child(50), .secondSelector:nth-child(50) {
+  --test-variable: green;
+}
+.firstSelector[href^="starterpage"], .secondSelector[href^="starterpage"] {
+  --test-variable: green;
+}
+.firstSelector[href^="starterpage"][disabled], .secondSelector[href^="starterpage"][disabled] {
+  --test-variable: green;
+}
+.singleSelector a:hover {
+  --test-variable: green;
+}
+.singleSelector a::before {
+  --test-variable: green;
+}
+.singleSelector a:nth-child(50) {
+  --test-variable: green;
+}
+.singleSelector a[href^="starterpage"][disabled] {
+  --test-variable: green;
 }

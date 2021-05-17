@@ -24,7 +24,7 @@
       }
     }
   },
-  "ignorePatterns": ["**/dist/*"],
+  "ignorePatterns": ["**/dist/*", "src/types.ts"],
   "rules": {
     "quotes": [2, "single"]
   }

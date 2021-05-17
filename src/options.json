@@ -1,6 +1,11 @@
 {
   "type": "object",
   "properties": {
+    "mode": {
+      "description": "Output mode",
+      "type": "string",
+      "enum": ["full", "simple"]
+    },
     "syntax": {
       "description": "Syntax of the stylesheet",
       "type": "string",

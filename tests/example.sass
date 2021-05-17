@@ -1,5 +1,6 @@
 
 :root
+  // @case Main color.
   --color-primary: #ff017d
   --color-secondary: #000
   --color-background: white
@@ -15,8 +16,8 @@
   --margin-default: 0.5rem !important
 
 [data-theme="dark"]
-  $color-secondary: blue;
-
+  $color-secondary: blue
+  // @case Main color but for dark mode.
   --color-primary: #cf689a
   --color-secondary: $color-secondary
   --color-background: var(--color-background)
@@ -31,3 +32,31 @@
 @media screen and (min-width: 960px)
   :root
     --color-primary: blue
+
+.firstSelector, .secondSelector
+  .firstChildSelector, .secondChildSelector
+    --test-variable: red
+  &.firstModifierSelector, &.secondModifierSelector
+    --test-variable: blue
+  > div
+    --test-variable: yellow
+  & > span
+    --test-variable: green
+  &:hover
+    --test-variable: green
+  &::before
+    --test-variable: green
+  &:nth-child(50)
+    --test-variable: green
+  &[href^="starterpage"]
+    --test-variable: green
+  &[href^="starterpage"][disabled]
+    --test-variable: green
+.singleSelector a:hover
+  --test-variable: green
+.singleSelector a::before
+  --test-variable: green
+.singleSelector a:nth-child(50)
+  --test-variable: green
+.singleSelector a[href^="starterpage"][disabled]
+  --test-variable: green
