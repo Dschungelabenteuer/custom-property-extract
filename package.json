@@ -1,6 +1,6 @@
 {
   "name": "custom-property-extract",
-  "version": "1.2.0",
+  "version": "1.2.1",
   "description": "Extract CSS custom properties (a.k.a CSS variables) and their values from stylesheets.",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
