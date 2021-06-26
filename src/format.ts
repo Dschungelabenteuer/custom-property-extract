@@ -2,7 +2,7 @@ import { FileSyntax, StyleNode } from './types';
 
 export const formatScope = (
   scope: string[],
-  nodes: StyleNode[]
+  nodes: StyleNode[],
 ): string[] => {
   const output: string[] = [];
   const proceedableTypes = ['selector', 'space', 'delimiter'];
@@ -16,11 +16,11 @@ export const formatScope = (
         childSelectors[currentIndex] = formatSelector(content as StyleNode[]);
         return;
       case 'delimiter':
-        childSelectors[currentIndex] = childSelectors[currentIndex] + ' ';
-        currentIndex++;
+        childSelectors[currentIndex] = `${childSelectors[currentIndex]} `;
+        currentIndex += 1;
         return;
       default:
-        childSelectors[currentIndex] = childSelectors[currentIndex] + ' ';
+        childSelectors[currentIndex] = `${childSelectors[currentIndex]} `;
         break;
     }
   });
@@ -34,13 +34,22 @@ export const formatScope = (
       output.push(
         `${selector}${childSelector}`
           .replace(' &', '')
-          .replace(' :', ':')
+          .replace(' :', ':'),
       );
     });
   });
 
   return output;
-}
+};
+
+export const formatMediaQuery = (
+  syntax: FileSyntax,
+  nodes: StyleNode[],
+): string => {
+  const delimiters = ['atkeyword', 'block'];
+  const proceedableNodes = nodes.filter(({ type }) => !delimiters.includes(type));
+  return formatValue(syntax, proceedableNodes).trim();
+};
 
 export const formatValue = (
   syntax: FileSyntax,
@@ -56,7 +65,7 @@ export const formatValue = (
     if (Array.isArray(content)) {
       value = formatValue(syntax, content, type);
     } else {
-      value = formatStringValue(content as string, type, parentType)
+      value = formatStringValue(content as string, type, parentType);
     }
 
     // Transform parentheses
@@ -88,9 +97,8 @@ export const formatValue = (
 const formatStringValue = (
   value: string,
   type: string,
-  parentType?: string
+  parentType?: string,
 ): string => {
-
   if (type === 'space') {
     return ' ';
   }
@@ -100,11 +108,9 @@ const formatStringValue = (
   }
 
   return value;
-}
+};
 
-const formatColor = (value: string): string => {
-  return `#${value}`;
-}
+const formatColor = (value: string): string => `#${value}`;
 
 const formatWrappedContent = (
   value: string,
@@ -126,18 +132,18 @@ const formatWrappedContent = (
     default:
       return value;
   }
-}
+};
 
 const formatParentheses = (
   value: string,
   index: number,
-  length: number
-): string => formatWrappedContent(value, index, length, ['(', ')'])
+  length: number,
+): string => formatWrappedContent(value, index, length, ['(', ')']);
 
 const formatFunctionContent = (
   value: string,
   index: number,
-  length: number
+  length: number,
 ): string => {
   switch (index) {
     case 0:
@@ -147,13 +153,13 @@ const formatFunctionContent = (
     default:
       return value;
   }
-}
+};
 
 const formatAttributeContent = (
   value: string,
   index: number,
-  length: number
-): string => formatWrappedContent(value, index, length, ['[', ']'])
+  length: number,
+): string => formatWrappedContent(value, index, length, ['[', ']']);
 
 const formatIdentifier = (
   syntax: FileSyntax,
@@ -168,7 +174,7 @@ const formatIdentifier = (
     default:
       return value;
   }
-}
+};
 
 export const formatSelector = (
   nodes: StyleNode[],
@@ -183,7 +189,7 @@ export const formatSelector = (
     if (Array.isArray(content)) {
       value = formatSelector(content, type);
     } else {
-      value = formatStringValue(content as string, type, parentType)
+      value = formatStringValue(content as string, type, parentType);
     }
 
     if (type === 'class') {
@@ -195,7 +201,9 @@ export const formatSelector = (
     }
 
     if (type === 'pseudoClass') {
-      value = `:${value}`;
+      value = value === 'root'
+        ? ` :${value}`
+        : `:${value}`;
     }
 
     if (parentType === 'arguments') {
@@ -210,4 +218,4 @@ export const formatSelector = (
   });
 
   return output.join('');
-}
+};

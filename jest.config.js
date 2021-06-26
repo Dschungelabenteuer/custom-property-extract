@@ -5,11 +5,11 @@ module.exports = {
   },
   globals: {
     'ts-jest': {
-      tsConfig: 'tsconfig.json',
+      tsconfig: 'tsconfig.json',
     },
   },
   collectCoverage: true,
   testPathIgnorePatterns: ['node_modules', 'dist'],
   coverageDirectory: './coverage',
-  coverageReporters: ['cobertura', 'html', 'lcov']
+  coverageReporters: ['cobertura', 'html', 'lcov'],
 };

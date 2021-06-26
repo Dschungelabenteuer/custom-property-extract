@@ -40,8 +40,9 @@ export interface SimpleExtractResult {
 
 export type FullCustomPropertyValues = FullCustomPropertyValue[];
 export interface FullCustomPropertyValue {
+  media?: string;
   name?: string;
-  selector: string;
+  selector?: string;
   value: string;
 };
 export interface FullExtractResult {

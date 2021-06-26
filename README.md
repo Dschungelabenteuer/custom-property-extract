@@ -117,93 +117,45 @@ Using custom-property-extract's extract function with `mode` set to "`full`" wil
 ```js
 {
   '--color-primary': [
+    { value: '#ff017d', selector: ':root' },
+    { value: '#cf689a', selector: '[data-theme="dark"]' },
+    { value: 'blue', selector: '[data-theme="dark"].nested' },
     {
-      selector: ':root ',
-      value: '#ff017d'
-    },
-    {
-      selector: '[data-theme="dark"] ',
-      value: '#cf689a'
-    },
-    {
-      selector: '[data-theme="dark"].nested ',
-      value: 'blue'
-    },
-    {
-      selector: '[data-lang="us"]:root ',
-      value: 'blue'
+      value: 'blue',
+      selector: ':root',
+      media: 'screen and (min-width: 960px)'
     }
   ],
   '--color-secondary': [
-    {
-      selector: ':root ',
-      value: '#000'
-    },
-    {
-      selector: '[data-theme="dark"] ',
-      value: 'blue'
-    }
+    { value: '#000', selector: ':root' },
+    { value: 'blue', selector: '[data-theme="dark"]' }
   ],
   '--color-background': [
+    { value: 'white', selector: ':root' },
     {
-      selector: ':root ',
-      value: 'white'
-    },
-    {
-      selector: '[data-theme="dark"] ',
-      value: 'var(--color-background)'
+      value: 'var(--color-background)',
+      selector: '[data-theme="dark"]'
     }
   ],
-  '--color-foreground': [
-    {
-      selector: ':root ',
-      value: 'var(--color-secondary)'
-    }
-  ],
-  '--radius-round': [
-    {
-      selector: ':root ',
-      value: '50% 50%'
-    }
-  ],
-  '--spacing-s': [
-    {
-      selector: ':root ',
-      value: '5rem'
-    }
-  ],
+  '--color-foreground': [ { value: 'var(--color-secondary)', selector: ':root' } ],
+  '--radius-round': [ { value: '50% 50%', selector: ':root' } ],
+  '--spacing-s': [ { value: '5rem', selector: ':root' } ],
   '--shadow-xs': [
     {
-      selector: ':root ',
-      value: '1px 2px 3px 4px rgba(0,0,0,0.25), inset 4px 3px 2px 1px #fff'
+      value: '1px 2px 3px 4px rgba(0,0,0,0.25), inset 4px 3px 2px 1px #fff',
+      selector: ':root'
     }
   ],
-  '--border-light': [
-    {
-      selector: ':root ',
-      value: '1px solid rgba(0,0,0,0.15)'
-    }
-  ],
+  '--border-light': [ { value: '1px solid rgba(0,0,0,0.15)', selector: ':root' } ],
   '--amount-suffix-content': [
-    {
-      selector: ':root ',
-      value: "'€'"
-    },
-    {
-      selector: '[data-lang="us"] ',
-      value: "'$'"
-    }
+    { value: "'€'", selector: ':root' },
+    { value: "'$'", selector: '[data-lang="us"]' }
   ],
-  '--margin-default': [
-    {
-      selector: ':root ',
-      value: '0.5rem !important'
-    }
-  ],
+  '--margin-default': [ { value: '0.5rem !important', selector: ':root' } ],
   '--width-header': [
     {
-      selector: '[data-theme="dark"].nested ',
-      value: 'calc(100vh - (3rem / 2))'
+      value: 'calc(100vh - (3rem / 2))',
+      selector: '[data-theme="dark"].nested'
     }
   ]
 }

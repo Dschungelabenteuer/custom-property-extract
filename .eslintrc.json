@@ -1,6 +1,6 @@
 {
   "env": { "node": true, "es2021": true, "jest": true },
-  "extends": ["eslint:recommended", "prettier"],
+  "extends": ["eslint:recommended", "prettier", "airbnb-base"],
   "parser": "@typescript-eslint/parser",
   "parserOptions": {
     "sourceType": "module"
@@ -26,6 +26,17 @@
   },
   "ignorePatterns": ["**/dist/*", "src/types.ts"],
   "rules": {
-    "quotes": [2, "single"]
+    "quotes": [2, "single"],
+    "no-use-before-define": "off",
+    "import/extensions": [
+      "error",
+      "ignorePackages",
+      {
+        "js": "never",
+        "jsx": "never",
+        "ts": "never",
+        "tsx": "never"
+      }
+    ]
   }
 }
